@@ -11,24 +11,21 @@ import com.sample.stub.VehicleServiceStub.AddVehicleResponse;
 
 public class SampleSoapClient {
 
-    public static void main(String [] args){
+    public int getNumSeats(int vehicleNum) {
+        return getVehicle(vehicleNum).getNoOfSeats();
+    }
+
+    private Vehicle getVehicle(int vehicleNum) {
+
+        Vehicle vehicle = null;
 
         try {
             VehicleServiceStub stub = new VehicleServiceStub();
             VehicleServiceStub.GetVehicle vehNum = new VehicleServiceStub.GetVehicle();
-            vehNum.setId(0);
+            vehNum.setId(vehicleNum);
             VehicleServiceStub.GetVehicleResponse response1 = stub.getVehicle(vehNum);
-            Vehicle vehicle = response1.get_return();
-            System.out.println(vehicle.toString());
+            vehicle = response1.get_return();
 
-//            Vehicle vehicle1 = new Vehicle();
-//            vehicle1.setId(0);
-//            vehicle1.setBrand("Brand1");
-//            vehicle1.setModel("Model1");
-//            vehicle1.setNoOfSeats(4);
-//            AddVehicle addV1 = new AddVehicle();
-//            addV1.setVehicle(vehicle1);
-//            AddVehicleResponse response = stub.addVehicle(addV1);
 //log response.getGetGeoIPResult().getCountryName()
         } catch (AxisFault e) {
             e.printStackTrace();
@@ -36,5 +33,13 @@ public class SampleSoapClient {
             e.printStackTrace();
         }
 
+        return vehicle;
+    }
+
+    public static void main(String [] args){
+
+        SampleSoapClient client = new SampleSoapClient();
+        int numSeats = client.getNumSeats(0);
+        System.out.println("Number of seats: " + numSeats);
     }
 }
